@@ -1,39 +1,45 @@
-import { useState,useEffect } from "react";
-import { onChngeArgs, Product } from '../interfaces/interfaces';
+import { useState,useEffect, useRef } from "react";
+import { onChngeArgs, Product, InitialValues } from '../interfaces/interfaces';
 
 interface useProductArgs{
   product : Product,
   onChange?: ( args: onChngeArgs) => void,
-  value?: number
+  value?: number,
+  initialValues?: InitialValues
 }
 
-export const useProduct = ( {onChange, product, value = 0}: useProductArgs ) => {
+export const useProduct = ( {onChange, product, value = 0, initialValues}: useProductArgs ) => {
 
-    const [counter, setCounter] = useState( value );
+    const [counter, setCounter] = useState<number>( initialValues?.count || value );
+    const isMounted = useRef(false);
+    const increaseBy = ( valor : number) => {
+      
+        let newValue = Math.max( counter + valor, 0)
+        if ( initialValues?.maxCount ) {
+            newValue = Math.min( newValue, initialValues.maxCount)
+        }
 
-    //const isControlled = useRef( !!onChange )
-
-    const increaseBy = ( value : number) => {
-
-        // if ( isControlled.current && onChange){
-        //   return onChange({ count: value, product})
-        //   //return onChange({ count: value, product}) que no haga la advertencia
-        // }
-
-        const newValue = Math.max( counter + value, 0)
         setCounter( newValue );
-
         onChange && onChange({product, count: newValue });
     }
 
-    useEffect(() => {
-      setCounter( value )
+    const reset = () =>{
+        setCounter( initialValues?.count || value )
+    }
+
+    useEffect(() => {      
+       isMounted.current ? setCounter( value ) : isMounted.current = true;
     }, [value])
-    
+
 
   return (
     {
-        counter, increaseBy
+        counter, 
+        isMaxCountReached: !!initialValues?.count && initialValues.maxCount === counter,
+        maxCount : initialValues?.maxCount,
+
+        increaseBy,
+        reset,
     }
   )
 }
