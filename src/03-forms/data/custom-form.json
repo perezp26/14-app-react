@@ -1,0 +1,61 @@
+[
+    {
+        "type": "input",
+        "name":"firtsName",
+        "placeholder":"Luis",
+        "label": "First Name",
+        "value": "",
+        "validations":[
+            {
+                "type": "required"
+            },
+            {
+                "type": "minLength",
+                "value":"5"
+            }
+        ]
+    },
+    {
+        "type": "input",
+        "name":"lastName",
+        "placeholder":"Pérez",
+        "label": "Last Name",
+        "value": "",
+        "validations":[
+            {
+                "type": "required"
+            }
+        ]
+    },
+    {
+        "type": "email",
+        "name":"email",
+        "placeholder":"luis@gmail.com",
+        "label": "Email",
+        "value": "",
+        "validations":[
+            {
+                "type": "required"
+            },
+            {
+                "type": "email"
+            }
+        ]
+    },
+    {
+        "type": "select",
+        "name":"favoriteGame",
+        "label": "Favorite Game",
+        "value": "",
+        "options":[
+            { "id":1, "label":"Call of Duty"} ,
+            { "id":2, "label":"Mario KaRT"},
+            { "id":3, "label":"FIfa"}
+        ],
+        "validations":[
+            {
+                "type": "required"
+            }
+        ]
+    }
+]
